@@ -2,7 +2,7 @@
 const responseHandler = {
     clientError: (res, message)=>{
         res.status(400).json({
-            status: "failure",
+            status: "fail",
             message: message
         })
     },
@@ -30,29 +30,36 @@ const responseHandler = {
 
     unauthorized: (res, message)=>{
         res.status(401).json({
-            status: "failure",
+            status: "fail",
             message
         })
     },
 
     notfound: (res, message)=>{
         res.status(404).json({
-            status: "failure",
+            status: "fail",
             message
         })
     },
 
     unprocessable: (res, message)=>{
         res.status(422).json({
-            status: "failure",
+            status: "fail",
             message
         })
     },
 
     forbidden: (res, message)=>{
         res.status(403).json({
-            status: "failure",
+            status: "fail",
             message
+        })
+    },
+
+    networkError: (res, message)=>{
+        res.status(503).json({
+            status: "fail",
+            message: "Network Error coming from the backend (Change later)"
         })
     }
 }

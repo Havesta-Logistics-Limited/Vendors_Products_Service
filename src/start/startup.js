@@ -23,7 +23,12 @@ app.use(cookieParser());
 
 
 //Error handlers and database connection
-app.use(errorMiddleware.handleDatabaseConnection);
+/* app.use(async(err, req, res, next)=>{
+    const client = await pool.connect()
+   
+    req.client = client
+    next()
+}); */
 app.use('/api/v1/products', router);
 app.use(errorMiddleware.globalErrorHandler);
 app.all('*', errorMiddleware.globalNotFoundHandler);

@@ -2,14 +2,8 @@ const { pool } = require("../database/database.config");
 const { responseHandler } = require("../handlers/response.handler");
 
 const errorMiddleware = {
-  handleDatabaseConnection: async (req, res, next) => {
-    try {
-      const client = await pool.connect();
-      req.client = client; // Attach client to request for use in routes
-      next();
-    } catch (err) {
-      next(err); // Pass the error to the error handling middleware
-    }
+  handleDatabaseConnection: async (err, req, next) => {
+    
   },
 
   globalNotFoundHandler: (req, res, next) => {
@@ -20,6 +14,7 @@ const errorMiddleware = {
   },
 
   globalErrorHandler: (err, req, res, next) => {
+    console.error(err);
     if (
       err.code === "ECONNREFUSED" ||
       err.code === "ENOTFOUND" ||
@@ -31,6 +26,11 @@ const errorMiddleware = {
       );
     }
   },
+
+
+  shareDatabaseConnection: (req, res, next)=>{
+
+  }
 };
 
 module.exports = { errorMiddleware };

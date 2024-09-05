@@ -8,7 +8,7 @@ const pool = new Pool({
    application_name: "Havesta Products Service_db",
    connectionTimeoutMillis: 5000,
    ssl: {
-      rejectUnauthorized: false, // Allows self-signed certificates
+      rejectUnauthorized: false, 
     },
 })
 

@@ -1,16 +1,21 @@
-create table vendor_products (
-	id INT,
-	owner_public_id VARCHAR(40),
-	product_public_id VARCHAR(40),
-	product_name VARCHAR(50),
-	price VARCHAR(50),
-	in_stock VARCHAR(50),
-	quantity_available INT,
-	category VARCHAR(10),
-	measurement VARCHAR(10),
-	has_bulk_deal VARCHAR(50),
-	product_image VARCHAR(10)
+CREATE TABLE vendor_products (
+    id BIGSERIAL PRIMARY KEY,
+    owner_public_id VARCHAR(50),
+    product_public_id VARCHAR(50) UNIQUE,
+    product_name VARCHAR(50),
+    in_stock BOOLEAN DEFAULT TRUE,
+    quantity_available INT,
+    commission_rate DECIMAL (10, 2) DEFAULT 0.10,
+    category VARCHAR(150),
+    measurement VARCHAR(150),
+    product_image TEXT,
+    original_price DECIMAL (10, 2),
+    commission DECIMAL (10, 2) GENERATED ALWAYS AS (original_price * commission_rate) STORED,
+    final_price DECIMAL (10, 2) GENERATED ALWAYS AS (original_price - (original_price * commission_rate )) STORED,
+	product_description VARCHAR(255) 
 );
+
+
 insert into vendor_products (id, owner_public_id, product_public_id, product_name, price, in_stock, quantity_available, category, measurement, has_bulk_deal, product_image) values (1, '7d54d22c-78a7-491a-ab7f-20eb1dececd0', '3fcf0d3f-b248-4050-963c-7a66e166ecfb', 'Wine - Prem Select Charddonany', '$310.95', true, 89, 'dairy', 'gram', false, 'taco.jpg');
 insert into vendor_products (id, owner_public_id, product_public_id, product_name, price, in_stock, quantity_available, category, measurement, has_bulk_deal, product_image) values (2, '9a2f5dba-d601-48ef-bf89-c548f1f762a4', '236eae90-dd63-41a9-b6ac-661b63d27a29', 'Chocolate Bar - Coffee Crisp', '$169.42', true, 13, 'dairy', 'cup', false, 'sushi.jpg');
 insert into vendor_products (id, owner_public_id, product_public_id, product_name, price, in_stock, quantity_available, category, measurement, has_bulk_deal, product_image) values (3, 'd50fc5a8-7196-4954-98c2-d01950d26652', 'c618ed55-32f7-42c7-9d5c-2f2cf4cf8a7c', 'Bread - Pumpernickel', '$305.21', true, 44, 'sweets', 'ounce', false, 'pizza.jpg');

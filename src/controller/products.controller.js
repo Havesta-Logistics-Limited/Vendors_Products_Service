@@ -202,7 +202,7 @@ const addProducts = async (req, res) => {
     
     const finalPriceAccuracy = parseFloat(product.rows[0].final_price) === finalPrice    
     if(!finalPriceAccuracy){
-      console.log("Final price was not calculated accurately")
+      console.log("Final price was not calculated accurately!te")
       throw new Error("Could not add product to invetory")
     }
 

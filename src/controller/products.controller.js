@@ -289,4 +289,5 @@ module.exports = {
   addProducts,
   editProduct,
   filterProducts,
+  deleteProduct
 };

@@ -66,4 +66,11 @@ const productStatusValidation = [
      .withMessage("Status must be a boolean"),
 ]
 
+
+const editProductValidation = [
+    param("productId")
+     .exists()
+     .withMessage("Product ID is missing")
+     .isUUID()
+  ]
 module.exports  = {addProductValidation, individualProductValidation, productStatusValidation}

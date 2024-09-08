@@ -5,7 +5,8 @@ const requestHandler = require("../handlers/request.handler");
 const {
   addProductValidation,
   individualProductValidation,
-  productStatusValidation
+  productStatusValidation,
+  editProductValidation
 } = require("../utility/requestValidation");
 
 
@@ -19,7 +20,7 @@ router.get(
 );
 
 router.get(
-  "/vendor_product/:id",
+  "/vendor_product/:productId",
   individualProductValidation,
   requestHandler.validate,
   productController.individualProductDetails
@@ -36,6 +37,13 @@ router.post(
     addProductValidation,
     requestHandler.validate,
     productController.addProducts
+)
+
+router.put(
+  "/edit_vendor_product/:productId",
+  editProductValidation,
+  requestHandler.validate,
+  productController.editProduct,
 )
 
 module.exports = { router };

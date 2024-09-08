@@ -22,9 +22,10 @@ const responseHandler = {
         })
     },
 
-    ok: (res)=>{
+    ok: (res, message = "Action completed")=>{
         res.status(204).json({
             status: "success",
+            message
         })
     },
 

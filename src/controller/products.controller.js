@@ -229,7 +229,7 @@ const editProduct = async(req, res) => {
 
     client = await pool.connect()
     await client.query("BEGIN")
-    const productExists = await client.query(db_query.PRODUCT_EDIT_CONFIRMATION, [productId, publicId])
+    const productExists = await client.query(db_query.PRODUCT_CONFIRMATION, [productId, publicId])
     if(productExists.rowCount === 0){
       responseHandler.clientError(res, "Product not found")
       throw new Error("Product not found")
@@ -249,6 +249,36 @@ const editProduct = async(req, res) => {
    await client.release()
   }
 };
+
+
+
+const deleteProduct = async(req, res)=>{
+  const productId = "564a5f44-b10e-4967-9bd5-f94d20fa920c"
+  const vendorId = "7d54d22c-78a7-491a-ab7f-20eb1dececd0"
+ /* ADD A CHECK ON THE AVAVILABILITY OF BOTH CRED */
+
+  let client;
+  try{
+    client = await pool.connect()
+    await client.query("BEGIN")
+    const dbResposne = await client.query(db_query.DELETE_PRODUCT, [vendorId, productId])
+    const product = await client.query(db_query.PRODUCT_CONFIRMATION, [productId, vendorId])
+    if(product.rowCount === 0){
+      throw new Error("Product not found in inventory")
+    } 
+    if(dbResposne.rowCount === 0){
+      throw new Error("Could not delete product from inventory please try again or contact customer support")
+    }
+
+    await client.query("COMMIT")
+    responseHandler.ok(res, "Product deleted successfully")
+
+  }catch(err){
+    await client.query("ROLLBACK")
+  }finally{
+    await client.release();
+  }
+}
 
 const filterProducts = () => {};
 

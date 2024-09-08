@@ -15,8 +15,8 @@ const db_query = {
       Object.keys(updatedFields).length + 1
     } AND owner_public_id = $${Object.keys(updatedFields).length + 2} RETURNING *`;
   },
-
-  PRODUCT_EDIT_CONFIRMATION: "SELECT * FROM vendor_products WHERE product_public_id = $1 AND owner_public_id = $2"
+  DELETE_PRODUCT: "DELETE FROM vendors_products WHERE owner_public_id = $1 AND product_public_id = $2",
+  PRODUCT_CONFIRMATION: "SELECT * FROM vendor_products WHERE product_public_id = $1 AND owner_public_id = $2",
 };
 
 module.exports = { db_query };

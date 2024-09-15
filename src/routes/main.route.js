@@ -41,9 +41,9 @@ router.post(
 
 router.put(
   "/edit_vendor_product/:productId",
-  editProductValidation,
-  requestHandler.validate,
-  productController.editProduct,
+ /*  editProductValidation, */
+/*   requestHandler.validate,
+ */  productController.editProduct,
 )
 
 module.exports = { router };

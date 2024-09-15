@@ -218,11 +218,12 @@ const addProducts = async (req, res) => {
 };
 
 const editProduct = async(req, res) => {
-   const productId = "564a5f44-b10e-4967-9bd5-f94d20fa920c"
+   const productId = "c3518816-2b08-4785-acc6-081ff2845ed0"
    const publicId = "7d54d22c-78a7-491a-ab7f-20eb1dececd0"
    const {...updatedFields} = req.body
    const queryString = db_query.EDIT_PRODUCT(updatedFields)
    const values = [...Object.values(updatedFields), productId, publicId]
+   console.log(queryString)
    
   let client;
   try{
@@ -231,7 +232,6 @@ const editProduct = async(req, res) => {
     await client.query("BEGIN")
     const productExists = await client.query(db_query.PRODUCT_CONFIRMATION, [productId, publicId])
     if(productExists.rowCount === 0){
-      responseHandler.clientError(res, "Product not found")
       throw new Error("Product not found")
     }
     const queryResponse = await client.query(queryString, values)

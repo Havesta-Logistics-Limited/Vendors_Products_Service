@@ -1,10 +1,13 @@
 const { app } = require("./src/start/startup");
 const PORT = process.env.PORT || 6000;
 const { connectDb } = require("./src/database/database.config");
-
+const sequelize = require("./src/database/sequelize.js");
 const server = app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  const poolInstance = connectDb(); // Establish database connection
+  sequelize.authenticate()
+.then(()=> console.log("Database connected to Sequelize"))
+.catch((err)=> console.log(`Error connecting to Sequelize ${err}`))
+/*   const poolInstance = connectDb(); */ // Establish database connection
 
   // Handle graceful shutdown
   const handleServerClose = () => {

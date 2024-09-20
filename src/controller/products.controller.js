@@ -136,6 +136,7 @@ const toggleProductStatus = async (req, res) => {
   }
 };
 
+
 const addProducts = async (req, res) => {
   console.log("function running")
   const publicId =
@@ -280,7 +281,25 @@ const deleteProduct = async(req, res)=>{
   }
 }
 
-const filterProducts = () => {};
+
+
+const filterProducts = async (req, res) => {
+  const ownerId = req.user.publicId;
+  const filterValue = req.query.filter;
+  const queryField = req.query.field
+  let client;
+
+  try{
+    client = await pool.connect()
+    await client.query("BEGIN")
+    const product = await client.query()
+  }catch(err){
+
+  }finally{
+
+  }
+
+};
 
 module.exports = {
   getAllProducts,

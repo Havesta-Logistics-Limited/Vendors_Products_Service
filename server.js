@@ -7,7 +7,7 @@ const server = app.listen(PORT, () => {
   sequelize.authenticate()
 .then(()=> console.log("Database connected to Sequelize"))
 .catch((err)=> console.log(`Error connecting to Sequelize ${err}`))
-/*   const poolInstance = connectDb(); */ // Establish database connection
+   const poolInstance = connectDb(); 
 
   // Handle graceful shutdown
   const handleServerClose = () => {

@@ -63,12 +63,12 @@
         allowNull: false
       },
       product_description: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING(150),
         allowNull: true
       }
  }, {
     tableName: "vendor_products",
-    timestamps: true,
+    timestamps: false,
     hooks: {
         beforeSave: (products)=>{
             products.commission = products.original_price * products.commission_rate;
@@ -76,3 +76,5 @@
         }
     }
  })
+
+ module.exports = {VendorProduct}

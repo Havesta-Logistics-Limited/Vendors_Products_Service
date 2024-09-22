@@ -11,14 +11,12 @@ const {
 
 
 
-
-
 router.get(
   "/all_vendor_products",
   requestHandler.validate,
   productController.getAllProducts
 );
-
+   
 router.get(
   "/vendor_product/:productId",
   individualProductValidation,
@@ -46,4 +44,13 @@ router.put(
  */  productController.editProduct,
 )
 
+router.delete(
+  "/delete_product",
+  productController.deleteProduct
+)
+
+router.get(
+  "/filter_products",
+  productController.filterProducts
+)
 module.exports = { router };

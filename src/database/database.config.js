@@ -2,7 +2,7 @@ const {Pool} = require('pg');
 require("dotenv").config()
 
 const pool = new Pool({
-   connectionString: process.env.PRODUCT_DB_CONNECTION_STRING,
+   connectionString: "postgresql://havesta:4wqdhJvkQC2cwKwQgGXgqQP5x1djcpjh@dpg-crmv1fjtq21c73arjrd0-a.oregon-postgres.render.com/havesta_vendors_db",
    max: 100,
    idleTimeoutMillis: 30000,
    application_name: "Havesta Products Service_db",

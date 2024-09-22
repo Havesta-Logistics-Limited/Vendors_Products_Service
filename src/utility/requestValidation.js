@@ -46,15 +46,15 @@ const addProductValidation = [
 
 
 const individualProductValidation = [
-  param("productId")
+/*   param("productId")
    .exists()
    .withMessage("Product ID is missing")
    .isUUID()
-   .withMessage("Product ID must be a valid UUID"),
+   .withMessage("Product ID must be a valid UUID"), */   //turn it on for prod
 ]
 
 const productStatusValidation = [
-    param("productId")
+   /*  param("productId")
      .exists()
      .withMessage("Product ID is missing")
      .isUUID()
@@ -63,7 +63,7 @@ const productStatusValidation = [
      .exists()
      .withMessage("Status of product is missing")
      .isBoolean()
-     .withMessage("Status must be a boolean"),
+     .withMessage("Status must be a boolean"), */
 ]
 
 

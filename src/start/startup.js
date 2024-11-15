@@ -1,3 +1,4 @@
+require("dotenv-flow").config()
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -9,7 +10,7 @@ const {errorMiddleware}= require("../handlers/middlewareError.handler")
 const app = express();
 // Middleware for CORS, JSON parsing, and cookies
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:8080',
   credentials: true,
 }));
 app.use(express.json());

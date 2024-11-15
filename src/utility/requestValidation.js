@@ -1,7 +1,7 @@
 const { body, param } = require("express-validator");
 
 const addProductValidation = [
-  body("productName")
+  body("product_name")
     .exists()
     .withMessage("Product name missing")
     .isString()
@@ -11,12 +11,12 @@ const addProductValidation = [
     .withMessage("Quantity missing")
     .isInt({ gt: 0 })
     .withMessage("Quantity must be a positive integer"),
-  body("originalPrice")
+  body("original_price")
     .exists()
     .withMessage("Price of product is missing")
     .isFloat({ gt: 0 })
     .withMessage("Price must be a positive number"),
-  body("productDescription")
+  body("product_description")
     .exists()
     .withMessage("Product description missing")
     .isString()
@@ -31,12 +31,12 @@ const addProductValidation = [
     .withMessage("Measurement of product is missing")
     .isString()
     .withMessage("Field must be a string"),
-  body("productImage")
+  body("product_image")
     .exists()
     .withMessage("Product image missing")
     .isURL()
     .withMessage("Product image must be a valid URL"),
-     body("inStock")
+     body("in_stock")
      .exists()
      .withMessage("In stock status missing")
      .isBoolean()

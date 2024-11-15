@@ -1,8 +1,8 @@
 const {Pool} = require('pg');
-require("dotenv").config()
+require("dotenv-flow").config()
 
 const pool = new Pool({
-   connectionString: "postgresql://havesta:4wqdhJvkQC2cwKwQgGXgqQP5x1djcpjh@dpg-crmv1fjtq21c73arjrd0-a.oregon-postgres.render.com/havesta_vendors_db",
+   connectionString: process.env.CONNECTION_STRING,
    max: 100,
    idleTimeoutMillis: 30000,
    application_name: "Havesta Products Service_db",

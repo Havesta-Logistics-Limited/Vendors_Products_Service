@@ -1,7 +1,12 @@
 const { Sequelize } = require("sequelize");
 
-module.exports = new Sequelize("havesta_vendors_db", "havesta", "4wqdhJvkQC2cwKwQgGXgqQP5x1djcpjh", {
-    host: "dpg-crmv1fjtq21c73arjrd0-a.oregon-postgres.render.com",
+const DBNAME = process.env.DATABASE_NAME
+const USER = process.env.DATABASE_USER
+const PASSWORD = process.env.DATABASE_PASSWORD
+const HOST = process.env.DATABASE_HOST
+
+module.exports = new Sequelize(DBNAME, USER, PASSWORD, {
+    host: HOST,
     dialect: "postgres", 
     dialectOptions: {
           ssl: {

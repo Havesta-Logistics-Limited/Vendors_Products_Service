@@ -5,8 +5,7 @@ const requestHandler = require("../handlers/request.handler");
 const {
   addProductValidation,
   individualProductValidation,
-  productStatusValidation,
-  editProductValidation
+  productStatusValidation
 } = require("../utility/requestValidation");
 
 
@@ -25,15 +24,15 @@ router.get(
 );
 router.put(
   "/vendor_product/toggle_status",
-  productStatusValidation,
-  requestHandler.validate,
+  /* productStatusValidation,
+  requestHandler.validate, */
   productController.toggleProductStatus
 );
 
 router.post(
     "/add_vendor_product",
-    addProductValidation,
-    requestHandler.validate,
+    /* addProductValidation,
+    requestHandler.validate, */
     productController.addProducts
 )
 

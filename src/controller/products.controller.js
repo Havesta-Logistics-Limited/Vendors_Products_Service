@@ -8,10 +8,13 @@ const {
 const { v4: uuidv4 } = require("uuid");
 const { VendorProduct } = require("../models/VendorProduts.models");
 const sequelize = require("../database/sequelize");
+const {VendorDatabase} = require("../database/VendorDbController")
+const vendorDb = new VendorDatabase()
+
 
 const getAllProducts = async (req, res, next) => {
   /*  const publicId = req.user?.publicId; */
-  const publicId = "550e8400-e29b-41d4-a716-446655440000"; // Change to middleware value
+  const publicId = "123e4567-e89b-12d3-a456-426614174000"; // Change to middleware value
   console.log(publicId);
   if (!publicId) {
     return responseHandler.clientError(
@@ -23,40 +26,27 @@ const getAllProducts = async (req, res, next) => {
   const limit = 10;
   const offset = (page - 1) * limit;
 
-  let client = await pool.connect();
-
-  try {
-    await client.query("BEGIN");
-    const products = await client.query(db_query.GET_ALL_PRODUCTS, [
-      publicId,
-      limit,
-      0,
-    ]);
-    console.log(products);
-    res.status(200).json({
-      status: "success",
-      dataCount: products.rowCount,
-      data: products.rows,
-    });
-    await client.query("COMMIT");
-  } catch (err) {
-    await client.query("ROLLBACK");
-    if (err.message === "Db_error") {
-      next(err);
+  try{
+    const action = await vendorDb.getAllProducts(publicId, limit, offset, page)
+    if(action.success === true){
+      responseHandler.success(res, action.products, action.total)
+    }else{
+      responseHandler.unprocessable(res, action.message)
     }
-    return responseHandler.unprocessable(res, err.message);
-  } finally {
-    if (client) await client?.release();
+  }catch(err){
+  console.log(err.message)
   }
+
+  
 };
 
 const individualProductDetails = async (req, res, next) => {
-  const publicId =
-    "550e8400-e29b-41d4-a716-446655440000"; /* req.user.publicId */
+  const vendorId =
+    "123e4567-e89b-12d3-a456-426614174000"; /* req.user.vendorId */
   const productId =
-    "987e6543-e21b-43d2-b456-426614174001"; /* parseInt(req.params.productId); */
-  const client = await pool.connect();
-  if (!publicId) {
+    "123e4567-e89b-12d3-a456-426614174001"; /* parseInt(req.params.productId); */
+
+  if (!vendorId) {
     return responseHandler.clientError(
       res,
       "User not found. Please sign in again."
@@ -70,19 +60,14 @@ const individualProductDetails = async (req, res, next) => {
   }
 
   try {
-    await client.query("BEGIN");
-    const product = await client.query(
-      db_query.GET_INDIVIDUAL_PRODUCT_DETAILS,
-      [productId, publicId]
-    );
-    console.log(product);
-    responseHandler.success(res, product.rows[0]);
-    await client.query("COMMIT");
+  const action = await vendorDb.getIndividualProduct(vendorId, productId)
+    if(action.success === true){
+      responseHandler.success(res, action.product)
+    }else{
+      responseHandler.unprocessable(res, action.message)
+    }
   } catch (err) {
-    await client.query("ROLLBACK");
     return responseHandler.unprocessable(res, err.message);
-  } finally {
-    if (client) await client.release();
   }
 };
 
@@ -91,7 +76,7 @@ const toggleProductStatus = async (req, res) => {
     "550e8400-e29b-41d4-a716-446655440000"; /* req.user.publicId */
   const productId =
     "987e6543-e21b-43d2-b456-426614174001"; /* parseInt(req.params.productId); */
-  const booleanValueFromFrontend = false; /* Get value from the body */
+  const booleanValueFromFrontend = true; /* Get value from the body */
   if (typeof booleanValueFromFrontend !== "boolean") {
     return responseHandler.clientError(res, "Invalid value for toggle");
   }
@@ -146,7 +131,7 @@ const addProducts = async (req, res) => {
     inStock,
     productImage,
     measurement,
-  } = req.body;
+  } = req.body; 
 
   if (!publicId) {
     return responseHandler.clientError(
@@ -169,120 +154,65 @@ const addProducts = async (req, res) => {
       "Missing required fields. Please provide all required details."
     );
   }
-
-  let client;
-
-  const commission = calculateCommission(originalPrice);
-  if (!commission) {
-    return console.log("Could not calculate commission");
-  }
-  const finalPrice = calculateFinalPrice(originalPrice, commission);
-  try {
-    client = await pool.connect();
-    await client.query("BEGIN");
-    const product = await client.query(db_query.ADD_NEW_PRODUCT, [
-      publicId,
-      productId,
-      productName,
-      originalPrice,
-      inStock,
-      quantity,
-      category,
-      measurement,
-      productImage,
-      productDescription,
-    ]);
-    if (product.rowCount === 0) {
-      responseHandler.unprocessable(res, "Could not add product to inventory");
+  
+  try {   
+    const productObject = {
+      owner_public_id: publicId,
+      product_public_id: productId,
+      product_name: productName,
+      original_price: originalPrice,
+      in_stock: inStock,
+      quantity_available: quantity,
+      category: category,
+      measurement: measurement,
+      product_image: productImage,
+      product_description: productDescription,
+    }
+    
+    const action = await vendorDb.addProduct(productObject)
+    console.log(action)
+    if(action.success !== true){
+      responseHandler.unprocessable(res, action.message)
     }
 
-    const finalPriceAccuracy =
-      parseFloat(product.rows[0].final_price) === finalPrice;
-    if (!finalPriceAccuracy) {
-      console.log("Final price was not calculated accurately!te");
-      throw new Error("Could not add product to invetory");
-    }
-
-    await client.query("COMMIT");
-    responseHandler.created(res);
+ 
+    responseHandler.success(res, action.product)
   } catch (err) {
     console.log(err);
     responseHandler.unprocessable(res, err.message);
-    await client.query("ROLLBACK");
-  } finally {
-    await client.release();
   }
 };
 
 const editProduct = async (req, res) => {
-  const productId = "987e6543-e21b-43d2-b456-426614174001";
+  const productId = "4ea9a514-d2bc-4395-a573-e74c259c639c";
   const publicId = "550e8400-e29b-41d4-a716-446655440000";
-  const { ...updatedFields } = req.body;
-  const queryString = db_query.EDIT_PRODUCT(updatedFields);
-  const values = [...Object.values(updatedFields), productId, publicId];
-  console.log(queryString);
-
-  let client;
+  const updatedFields = req.body;
+ console.log(updatedFields)
   try {
-    client = await pool.connect();
-    await client.query("BEGIN");
-    const productExists = await client.query(db_query.PRODUCT_CONFIRMATION, [
-      productId,
-      publicId,
-    ]);
-    if (productExists.rowCount === 0) {
-      throw new Error("Product not found");
-    }
-    const queryResponse = await client.query(queryString, values);
-    if (queryResponse.rowCount === 0) {
-      throw new Error("Could not update product try again");
-    }
-    await client.query("COMMIT");
-    responseHandler.success(res, queryResponse.rows[0], queryResponse.rowCount);
+   const action = await vendorDb.editProduct(publicId, productId, updatedFields)
+   if(action.success !== true){
+    return responseHandler.unprocessable(res, action.message);
+   }
+    console.log(action)
+    responseHandler.success(res, action.product)
   } catch (err) {
-    await client.query("ROLLBACK");
-    responseHandler.unprocessable(res, "Could not update product try again");
-    console.log(err.message);
-  } finally {
-    await client.release();
-  }
+    console.log(err.message)
+  return  responseHandler.unprocessable(res, "Could not update product try again");
+  } 
 };
 
 const deleteProduct = async (req, res) => {
-  const productId = "123e4567-e89b-12d3-a456-426614174000";
+  const productId = "987e6543-e21b-43d2-b456-426614174001";
   const vendorId = "550e8400-e29b-41d4-a716-446655440000";
   /* ADD A CHECK ON THE AVAVILABILITY OF BOTH CRED */
   const t = await sequelize.transaction();
   try {
-    const productExist = await VendorProduct.findOne(
-      {
-        where: {
-          owner_public_id: vendorId,
-          product_public_id: productId,
-        },
-      },
-      { transaction: t }
-    );
-
-    console.log(productExist)
-
-    if (!productExist) {
-      throw new Error("Product not found");
+    const action = await vendorDb.deleteProduct(vendorId, productId);
+    if(action.success === true){
+      responseHandler.ok(res, action.message);
+    }else{
+      responseHandler.unprocessable(res, action.message);
     }
-
-     await VendorProduct.destroy(
-      {
-        where: {
-          owner_public_id: vendorId,
-          product_public_id: productId,
-        },
-        force: true,
-      },
-
-      { transaction: t }
-    );
-
-    responseHandler.ok(res, "Product deleted successfully");
   } catch (err) {
     await t.rollback();
   } finally {

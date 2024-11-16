@@ -20,7 +20,7 @@ const server = app.listen(PORT, async () => {
 
   const poolInstance = connectDb(); 
 
-  // Handle graceful shutdown
+
   const handleServerClose = () => {
     console.log("Server closing...");
     server.close(() => {
@@ -34,10 +34,9 @@ const server = app.listen(PORT, async () => {
       }
     });
   };
-
-  process.on('SIGINT', handleServerClose); // Ctrl+C
-  process.on('SIGTERM', handleServerClose); // Termination signal
+  
+  process.on('SIGINT', handleServerClose); 
+  process.on('SIGTERM', handleServerClose); 
 });
 
 
-console.log(process.env)

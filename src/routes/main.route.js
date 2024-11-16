@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controller/products.controller");
 const requestHandler = require("../handlers/request.handler");
+const autMiddleware = require("../middleware/auth.middleware")
 const {
   addProductValidation,
   individualProductValidation,
@@ -31,6 +32,7 @@ router.put(
 
 router.post(
     "/add_vendor_product",
+    autMiddleware,
     /* addProductValidation,
     requestHandler.validate, */
     productController.addProducts

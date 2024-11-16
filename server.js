@@ -1,12 +1,26 @@
+
+require("dotenv-flow").config()
 const { app } = require("./src/start/startup");
-const PORT = process.env.PORT || 6000;
 const { connectDb } = require("./src/database/database.config");
+const sequelize = require("./src/database/sequelize.js");
 
-const server = app.listen(PORT, () => {
+// Server setup
+const PORT = process.env.PORT || 8000;
+
+const server = app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
-  const poolInstance = connectDb(); // Establish database connection
+  
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
+    console.log("Database connected to Sequelize");
+  } catch (err) {
+    console.error(`Error connecting to Sequelize: ${err.message}`);
+  }
 
-  // Handle graceful shutdown
+  const poolInstance = connectDb(); 
+
+
   const handleServerClose = () => {
     console.log("Server closing...");
     server.close(() => {
@@ -20,7 +34,9 @@ const server = app.listen(PORT, () => {
       }
     });
   };
-
-  process.on('SIGINT', handleServerClose); // Ctrl+C
-  process.on('SIGQUIT', handleServerClose); // Quit signal
+  
+  process.on('SIGINT', handleServerClose); 
+  process.on('SIGTERM', handleServerClose); 
 });
+
+

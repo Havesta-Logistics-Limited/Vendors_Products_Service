@@ -1,14 +1,21 @@
 const { extractUserPublicId } = require("../utility/extraction.utility");
-const auth = async (req, res, next) => {
+
+
+
+module.exports = async (req, res, next) => {
   try {
     const token = req.get("user_profile_cookie");
+    if(process.env.NODE_ENV !== "production"){
+      console.log(token)
+
+    }
     if (!token) {
       throw new Error("Token Invalid or unprovided, please sign in again");
     }
 
 
 
-    const userPublicId = await extractUserPublicId(token);
+    const userPublicId = extractUserPublicId(token);
     if (!userPublicId) {
       throw new Error("The Public Id of the user could not be extracted");
     }
@@ -20,3 +27,5 @@ const auth = async (req, res, next) => {
     res.status(403).json({ status: "failed", message: err.message });
   }
 };
+
+

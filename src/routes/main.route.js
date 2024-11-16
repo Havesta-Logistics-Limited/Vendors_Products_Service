@@ -2,14 +2,12 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controller/products.controller");
 const requestHandler = require("../handlers/request.handler");
+const autMiddleware = require("../middleware/auth.middleware")
 const {
   addProductValidation,
   individualProductValidation,
-  productStatusValidation,
-  editProductValidation
+  productStatusValidation
 } = require("../utility/requestValidation");
-
-
 
 
 
@@ -18,7 +16,7 @@ router.get(
   requestHandler.validate,
   productController.getAllProducts
 );
-
+   
 router.get(
   "/vendor_product/:productId",
   individualProductValidation,
@@ -27,15 +25,16 @@ router.get(
 );
 router.put(
   "/vendor_product/toggle_status",
-  productStatusValidation,
-  requestHandler.validate,
+  /* productStatusValidation,
+  requestHandler.validate, */
   productController.toggleProductStatus
 );
 
 router.post(
     "/add_vendor_product",
-    addProductValidation,
-    requestHandler.validate,
+    autMiddleware,
+    /* addProductValidation,
+    requestHandler.validate, */
     productController.addProducts
 )
 
@@ -46,4 +45,13 @@ router.put(
  */  productController.editProduct,
 )
 
+router.delete(
+  "/delete_product",
+  productController.deleteProduct
+)
+
+router.get(
+  "/filter_products",
+  productController.filterProducts
+)
 module.exports = { router };

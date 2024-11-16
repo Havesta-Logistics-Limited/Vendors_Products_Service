@@ -16,7 +16,10 @@ const db_query = {
     } AND owner_public_id = $${Object.keys(updatedFields).length + 2} RETURNING product_image, product_name, original_price, final_price, product_public_id, product_description, in_stock`;
   },
   DELETE_PRODUCT: "DELETE FROM vendors_products WHERE owner_public_id = $1 AND product_public_id = $2",
-  PRODUCT_CONFIRMATION: "SELECT * FROM vendor_products WHERE product_public_id = $1 AND owner_public_id = $2",
+  PRODUCT_CONFIRMATION: "SELECT * FROM vendor_products WHERE product_public_id= $1 AND owner_public_id= $2",
+  FILTER_PRODUCTS: ()=>{
+    return `SELECT * FROM vendor_products WHERE owner_public_id=$1 AND (category ILIKE '%$2%' OR product_name ILIKE '%$2%' OR product_description ILIKE '%$2%')`;
+  }
 };
 
 module.exports = { db_query };

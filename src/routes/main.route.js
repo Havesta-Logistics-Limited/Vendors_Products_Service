@@ -15,6 +15,11 @@ router.get(
   "/all_vendor_products",
   requestHandler.validate,
   productController.getAllProducts
+)
+
+router.get(
+  "/",
+  productController.test
 );
    
 router.get(

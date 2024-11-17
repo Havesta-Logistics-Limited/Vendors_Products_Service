@@ -11,7 +11,9 @@ const sequelize = require("../database/sequelize");
 const {VendorDatabase} = require("../database/VendorDbController")
 const vendorDb = new VendorDatabase()
 
-
+const test = (req, res)=>{
+    res.json({message: "Server is working"})
+}
 const getAllProducts = async (req, res, next) => {
   /*  const publicId = req.user?.publicId; */
   const publicId = "123e4567-e89b-12d3-a456-426614174000"; // Change to middleware value
@@ -247,4 +249,5 @@ module.exports = {
   editProduct,
   filterProducts,
   deleteProduct,
+  test
 };

@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-app.use("/vendor_service/api/v1/products", router);
+app.use("/vendor_service/api/products", router);
 app.use(errorMiddleware.globalErrorHandler);
 app.all("*", errorMiddleware.globalNotFoundHandler);
 

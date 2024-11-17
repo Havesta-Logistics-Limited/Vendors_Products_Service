@@ -37,7 +37,7 @@ router.put(
 
 router.post(
     "/add_vendor_product",
-    autMiddleware,
+  /*   autMiddleware, */
     /* addProductValidation,
     requestHandler.validate, */
     productController.addProducts

@@ -17,6 +17,8 @@ app.use(
       "https://nginx-configuration-4f3p.onrender.com",
     ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
+
   })
 );
 app.use(express.json());

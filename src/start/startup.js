@@ -7,7 +7,14 @@ const { responseHandler } = require("../handlers/response.handler");
 const { pool } = require("../database/database.config");
 const { errorMiddleware } = require("../handlers/middlewareError.handler");
 
+
 const app = express();
+
+app.use((req, res, next) => {
+  console.log( res.getHeaders());
+ 
+  next();
+});
 // Middleware for CORS, JSON parsing, and cookies
 app.use(
   cors({
@@ -16,6 +23,7 @@ app.use(
       "https://client-portal-v1.onrender.com",
       "https://nginx-configuration-4f3p.onrender.com",
     ],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
 
@@ -28,5 +36,10 @@ app.use(cookieParser());
 app.use("/vendor_service/api/products", router);
 app.use(errorMiddleware.globalErrorHandler);
 app.all("*", errorMiddleware.globalNotFoundHandler);
+app.use((req, res, next) => {
+  console.log( res.getHeaders());
+ 
+  next();
+});
 
 module.exports = { app };

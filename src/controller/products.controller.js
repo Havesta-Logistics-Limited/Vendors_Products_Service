@@ -12,6 +12,7 @@ const {VendorDatabase} = require("../database/VendorDbController")
 const vendorDb = new VendorDatabase()
 
 const test = (req, res)=>{
+
     res.json({message: "Server is working"})
 }
 const getAllProducts = async (req, res, next) => {

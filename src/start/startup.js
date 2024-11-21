@@ -11,7 +11,7 @@ const { errorMiddleware } = require("../handlers/middlewareError.handler");
 const app = express();
 
 app.use((req, res, next) => {
-  console.log( res.getHeaders());
+  console.log("Request entered the app")
  
   next();
 });
@@ -36,10 +36,5 @@ app.use(cookieParser());
 app.use("/vendor_service/api/products", router);
 app.use(errorMiddleware.globalErrorHandler);
 app.all("*", errorMiddleware.globalNotFoundHandler);
-app.use((req, res, next) => {
-  console.log( res.getHeaders());
- 
-  next();
-});
 
 module.exports = { app };

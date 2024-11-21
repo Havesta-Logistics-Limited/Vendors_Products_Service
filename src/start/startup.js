@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use("api/products", router);
+app.use("/api/products", router);
 
 // Error Handling
 app.use(errorMiddleware.globalErrorHandler);

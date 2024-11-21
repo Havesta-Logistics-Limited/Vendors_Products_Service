@@ -7,6 +7,7 @@ const errorMiddleware = {
   },
 
   globalNotFoundHandler: (req, res, next) => {
+    console.log(req.originalUrl)
     return responseHandler.notfound(
       res,
       "Resource not found, contact support for help"

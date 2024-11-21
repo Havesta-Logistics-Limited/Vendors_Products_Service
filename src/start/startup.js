@@ -11,7 +11,7 @@ const app = express();
 
 // CORS Middleware
 const corsOptions = {
-  origin: "http://localhost:8080",  // Your client app's origin
+  origin: ["http://localhost:8080", "https://nginx-configuration-4f3p.onrender.com"],  // Your client app's origin
   allowedHeaders: [
     "Origin",
     "X-Requested-With",

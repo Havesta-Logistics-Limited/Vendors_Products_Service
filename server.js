@@ -5,7 +5,7 @@ const { connectDb } = require("./src/database/database.config");
 const sequelize = require("./src/database/sequelize.js");
 
 // Server setup
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 60000;
 
 const server = app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);

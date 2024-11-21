@@ -11,14 +11,7 @@ const app = express();
 
 // CORS Middleware
 const corsOptions = {
-  origin: ["http://localhost:8080", "http://localhost:8081"],  // Your client app's origin
-  allowedHeaders: [
-    "Origin",
-    "X-Requested-With",
-    "Content-Type",
-    "Accept",
-    "Authorization",
-  ],
+  origin: "http://localhost:8080",  // Just the frontend origin
   credentials: true,  // Allow cookies
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 };

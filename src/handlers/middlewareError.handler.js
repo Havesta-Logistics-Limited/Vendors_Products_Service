@@ -10,7 +10,7 @@ const errorMiddleware = {
     console.log(req.originalUrl)
     return responseHandler.notfound(
       res,
-      "Resource not found, contact support for help"
+     req.originalUrl
     );
   },
 

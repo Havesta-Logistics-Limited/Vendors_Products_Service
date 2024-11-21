@@ -15,6 +15,14 @@ app.use((req, res, next) => {
  
   next();
 });
+
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(204); // No content for preflight request
+});
 // Middleware for CORS, JSON parsing, and cookies
 app.use(
   cors({
@@ -30,13 +38,7 @@ app.use(
   })
 );
 
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.sendStatus(204); // No content for preflight request
-});
+
 app.use(express.json());
 app.use(cookieParser());
 

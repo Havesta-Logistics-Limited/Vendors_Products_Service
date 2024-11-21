@@ -7,44 +7,39 @@ const { responseHandler } = require("../handlers/response.handler");
 const { pool } = require("../database/database.config");
 const { errorMiddleware } = require("../handlers/middlewareError.handler");
 
-
 const app = express();
 
-app.use((req, res, next) => {
-  console.log("Request entered the app")
- 
-  next();
-});
+// CORS Middleware
+const corsOptions = {
+  origin: "http://localhost:8080",  // Your client app's origin
+  allowedHeaders: [
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+    "Authorization",
+  ],
+  credentials: true,  // Allow cookies
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+};
 
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin',
-    "http://localhost:8080",
-  );
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.sendStatus(204); // No content for preflight request
-});
-// Middleware for CORS, JSON parsing, and cookies
-app.use(
-  cors({
-    origin: 
-      "http://localhost:8080",
-     
-  
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+// Apply CORS globally
+app.use(cors(corsOptions));
 
-  })
-);
-
-
+// Middleware for JSON parsing and cookies
 app.use(express.json());
 app.use(cookieParser());
 
+// Log incoming requests (optional)
+app.use((req, res, next) => {
+  console.log("Request entered the app");
+  next();
+});
 
+// Routes
 app.use("/vendor_service/api/products", router);
+
+// Error Handling
 app.use(errorMiddleware.globalErrorHandler);
 app.all("*", errorMiddleware.globalNotFoundHandler);
 

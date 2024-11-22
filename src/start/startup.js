@@ -9,14 +9,6 @@ const { errorMiddleware } = require("../handlers/middlewareError.handler");
 
 const app = express();
 
-// CORS Middleware
-const corsOptions = {
-  credentials: true,  // Allow cookies
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-};
-
-// Apply CORS globally
-app.use(cors(corsOptions));
 
 // Middleware for JSON parsing and cookies
 app.use(express.json());

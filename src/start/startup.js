@@ -11,7 +11,9 @@ const app = express();
 
 
 // Middleware for JSON parsing and cookies
-app.use(express.json());
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ limit: '5mb', extended: true }));
+
 app.use(cookieParser());
 
 // Log incoming requests (optional)

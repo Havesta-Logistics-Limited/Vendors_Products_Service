@@ -8,11 +8,13 @@ const {
   individualProductValidation,
   productStatusValidation
 } = require("../utility/requestValidation");
+const authMiddleware = require("../middleware/auth.middleware");
 
 
 
 router.get(
   "/all_vendor_products",
+  authMiddleware,
   requestHandler.validate,
   productController.getAllProducts
 )
@@ -37,7 +39,7 @@ router.put(
 
 router.post(
     "/add_vendor_product",
-  /*   autMiddleware, */
+    autMiddleware,
     /* addProductValidation,
     requestHandler.validate, */
     productController.addProducts

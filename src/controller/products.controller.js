@@ -16,9 +16,8 @@ const test = (req, res)=>{
     res.json({message: "Server is working"})
 }
 const getAllProducts = async (req, res, next) => {
-  /*  const publicId = req.user?.publicId; */
-  const publicId = "123e4567-e89b-12d3-a456-426614174000"; // Change to middleware value
-  console.log(publicId);
+ console.log(req.user.PUID)
+  const publicId = req.user.PUID; // Change to middleware value
   if (!publicId) {
     return responseHandler.clientError(
       res,
@@ -122,8 +121,7 @@ const toggleProductStatus = async (req, res) => {
 
 const addProducts = async (req, res) => {
   console.log("function running");
-  const publicId =
-    "550e8400-e29b-41d4-a716-446655440000"; /* req.user.publicId */
+  const publicId = req.user.PUID; /* req.user.publicId */
   const productId = uuidv4();
   const {
     productName,

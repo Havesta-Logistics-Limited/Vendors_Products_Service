@@ -9,18 +9,21 @@ const { errorMiddleware } = require("../handlers/middlewareError.handler");
 
 const app = express();
 
-
+if(process.env.NODE_ENV !== 'production'){
+  app.use(cors({
+    origin: "http://localhost:8080", // Replace with your frontend URL
+    credentials: true, // Enable cookies
+   
+  }))
+}
 // Middleware for JSON parsing and cookies
+app.use(cookieParser());
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ limit: '5mb', extended: true }));
 
-app.use(cookieParser());
+
 
 // Log incoming requests (optional)
-app.use((req, res, next) => {
-  console.log("Request entered the app");
-  next();
-});
 
 // Routes
 app.use("/vendors_service/api/products", router);

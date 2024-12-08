@@ -1,27 +1,22 @@
+const { responseHandler } = require("../handlers/response.handler");
 const { extractUserPublicId } = require("../utility/extraction.utility");
-
+const jwt = require("jsonwebtoken")
 
 
 module.exports = async (req, res, next) => {
   try {
-    const token = req.get("user_profile_cookie");
-    if(process.env.NODE_ENV !== "production"){
-      console.log(token)
-
-    }
+   
+    const token = req.cookies.accessToken
     if (!token) {
       throw new Error("Token Invalid or unprovided, please sign in again");
     }
 
+   const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY)
+   if(!decodedToken){
+    return responseHandler.forbidden(res, "Invalid session please login again")
+   }
 
-
-    const userPublicId = extractUserPublicId(token);
-    if (!userPublicId) {
-      throw new Error("The Public Id of the user could not be extracted");
-    }
-    req.user = userPublicId
-    //check the expiration time of the cookie before calling next
-
+   req.user= decodedToken
     next();
   } catch (err) {
     res.status(403).json({ status: "failed", message: err.message });

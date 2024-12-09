@@ -15,6 +15,9 @@ const test = (req, res)=>{
 
     res.json({message: "Server is working"})
 }
+
+
+
 const getAllProducts = async (req, res, next) => {
  console.log(req.user.PUID)
   const publicId = req.user.PUID; // Change to middleware value

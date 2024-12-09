@@ -147,7 +147,6 @@ const addProducts = async (req, res) => {
     !productDescription ||
     !originalPrice ||
     !quantity ||
-    !inStock ||
     !productImage
   ) {
     return responseHandler.clientError(

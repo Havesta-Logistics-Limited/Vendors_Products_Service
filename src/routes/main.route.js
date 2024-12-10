@@ -25,8 +25,10 @@ router.get(
 );
    
 router.get(
-  "/vendor_product/:productId",
+  "/vendor_product",
+  authMiddleware,
   individualProductValidation,
+ 
   requestHandler.validate,
   productController.individualProductDetails
 );
@@ -46,10 +48,9 @@ router.post(
 )
 
 router.put(
-  "/edit_vendor_product/:productId",
- /*  editProductValidation, */
-/*   requestHandler.validate,
- */  productController.editProduct,
+  "/edit_vendor_product",
+  authMiddleware,
+  productController.editProduct,
 )
 
 router.delete(

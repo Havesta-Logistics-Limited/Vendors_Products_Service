@@ -9,13 +9,13 @@ const { errorMiddleware } = require("../handlers/middlewareError.handler");
 
 const app = express();
 
-/* if(process.env.CODE_ENV !== 'production'){
+if(process.env.CODE_ENV !== 'production'){
   app.use(cors({
     origin: "http://localhost:8080", 
     credentials: true, 
    
   }))
-} */
+}
 // Middleware for JSON parsing and cookies
 app.use(cookieParser());
 app.use(express.json({ limit: '5mb' }));

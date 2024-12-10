@@ -46,10 +46,9 @@ const getAllProducts = async (req, res, next) => {
 };
 
 const individualProductDetails = async (req, res, next) => {
-  const vendorId =
-    "123e4567-e89b-12d3-a456-426614174000"; /* req.user.vendorId */
-  const productId =
-    "123e4567-e89b-12d3-a456-426614174001"; /* parseInt(req.params.productId); */
+  console.log("Entered individual function")
+  const vendorId = req.user.PUID
+  const { id:productId } = req.query
 
   if (!vendorId) {
     return responseHandler.clientError(
@@ -187,8 +186,8 @@ const addProducts = async (req, res) => {
 };
 
 const editProduct = async (req, res) => {
-  const productId = "4ea9a514-d2bc-4395-a573-e74c259c639c";
-  const publicId = "550e8400-e29b-41d4-a716-446655440000";
+  const productId = req.query.id;
+  const publicId = req.user.PUID;
   const updatedFields = req.body;
  console.log(updatedFields)
   try {
@@ -196,7 +195,6 @@ const editProduct = async (req, res) => {
    if(action.success !== true){
     return responseHandler.unprocessable(res, action.message);
    }
-    console.log(action)
     responseHandler.success(res, action.product)
   } catch (err) {
     console.log(err.message)

@@ -6,8 +6,8 @@ class VendorDatabase {
     try {
       const products = await VendorProduct.findAndCountAll({
         where: { owner_public_id: vendorId },
-        /*   limit,
-                offset: (page - 1) * offset */
+        order: [['id', 'DESC']],
+      
       });
 
       return { success: true, products: products.rows, total: products.count };

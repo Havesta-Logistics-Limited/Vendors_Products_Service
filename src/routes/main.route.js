@@ -55,6 +55,7 @@ router.put(
 
 router.delete(
   "/delete_product",
+  authMiddleware,
   productController.deleteProduct
 )
 

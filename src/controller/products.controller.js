@@ -203,8 +203,8 @@ const editProduct = async (req, res) => {
 };
 
 const deleteProduct = async (req, res) => {
-  const productId = "987e6543-e21b-43d2-b456-426614174001";
-  const vendorId = "550e8400-e29b-41d4-a716-446655440000";
+  const productId = req.query.id;
+  const vendorId = req.user.PUID;
   /* ADD A CHECK ON THE AVAVILABILITY OF BOTH CRED */
   const t = await sequelize.transaction();
   try {
@@ -215,6 +215,7 @@ const deleteProduct = async (req, res) => {
       responseHandler.unprocessable(res, action.message);
     }
   } catch (err) {
+    console.log(err)
     await t.rollback();
   } finally {
   }

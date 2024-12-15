@@ -18,6 +18,7 @@ class VendorDatabase {
 
   async deleteProduct(vendorId, productId) {
     const t = await sequelize.transaction();
+    console.log(vendorId, productId)
     try {
       const productExists = await VendorProduct.findOne({
         where: {

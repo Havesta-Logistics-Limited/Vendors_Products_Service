@@ -14,6 +14,7 @@ module.exports = new Sequelize(DBNAME, USER, PASSWORD, {
             rejectUnauthorized: false,
           },
     },
+    logging: false,
     pool: {
         max: 100,
         min: 0,

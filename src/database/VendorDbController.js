@@ -18,7 +18,6 @@ class VendorDatabase {
 
   async deleteProduct(vendorId, productId) {
     const t = await sequelize.transaction();
-    console.log(vendorId, productId)
     try {
       const productExists = await VendorProduct.findOne({
         where: {
@@ -28,6 +27,7 @@ class VendorDatabase {
 
         transaction: t,
       });
+
       if (!productExists) {
         await t.rollback();
         return { success: false, message: "Product not found" };
@@ -41,6 +41,7 @@ class VendorDatabase {
         transaction: t,
       });
 
+      console.log(deletedItem)
       if (deletedItem > 0) {
         await t.commit();
         return { success: true, message: "Product deleted successfully" };

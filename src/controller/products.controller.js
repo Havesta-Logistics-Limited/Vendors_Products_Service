@@ -209,6 +209,7 @@ const deleteProduct = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const action = await vendorDb.deleteProduct(vendorId, productId);
+    console.log(action);
     if(action.success === true){
       responseHandler.ok(res, action.message);
     }else{

@@ -33,9 +33,10 @@ router.get(
   productController.individualProductDetails
 );
 router.put(
-  "/vendor_product/toggle_status",
+  "/toggle_product_status",
   /* productStatusValidation,
   requestHandler.validate, */
+  autMiddleware,
   productController.toggleProductStatus
 );
 

@@ -76,11 +76,9 @@ const individualProductDetails = async (req, res, next) => {
 };
 
 const toggleProductStatus = async (req, res) => {
-  const publicId =
-    "550e8400-e29b-41d4-a716-446655440000"; /* req.user.publicId */
-  const productId =
-    "987e6543-e21b-43d2-b456-426614174001"; /* parseInt(req.params.productId); */
-  const booleanValueFromFrontend = true; /* Get value from the body */
+  const productId = req.query.id;
+  const publicId = req.user.PUID;
+  const booleanValueFromFrontend = req.body.status; /* Get value from the body */
   if (typeof booleanValueFromFrontend !== "boolean") {
     return responseHandler.clientError(res, "Invalid value for toggle");
   }

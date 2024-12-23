@@ -78,7 +78,7 @@ const individualProductDetails = async (req, res, next) => {
 const toggleProductStatus = async (req, res) => {
   const productId = req.query.id;
   const publicId = req.user.PUID;
-  const booleanValueFromFrontend = req.body.status; /* Get value from the body */
+  const booleanValueFromFrontend = req.query.status; /* Get value from the body */
   if (typeof booleanValueFromFrontend !== "boolean") {
     return responseHandler.clientError(res, "Invalid value for toggle");
   }

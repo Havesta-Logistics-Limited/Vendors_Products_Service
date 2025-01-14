@@ -36,7 +36,7 @@ const getAllProducts = async (req, res, next) => {
     if(action.success === true){
       responseHandler.success(res, action.products, action.total)
     }else{
-      responseHandler.unprocessable(res, "omo no product for u")
+      responseHandler.unprocessable(res, action.message)
     }
   }catch(err){
   console.log(err.message)

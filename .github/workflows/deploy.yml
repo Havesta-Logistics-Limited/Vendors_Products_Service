@@ -20,14 +20,8 @@ jobs:
 
     - name: Pull the latest changes and restart PM2
       run: |
-        ssh -o StrictHostKeyChecking=no dev@143.244.186.90 << 'EOF'
-          cd /home/dev/apps/Vendors_Products_Service
-          git pull origin 
-          pm2 reload all
-        EOF 
+        ssh -o StrictHostKeyChecking=no dev@143.244.186.90 "bash -c 'cd /home/dev/apps/Vendors_Products_Service && git pull origin main && pm2 reload all'"
 
     - name: Restart NGINX (if needed)
       run: |
-        ssh -o StrictHostKeyChecking=no dev@143.244.186.90 << 'EOF'
-          sudo systemctl restart nginx  
-        EOF
+        ssh -o StrictHostKeyChecking=no dev@143.244.186.90 "bash -c 'sudo systemctl restart nginx'"

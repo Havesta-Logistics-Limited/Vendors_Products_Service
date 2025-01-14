@@ -16,15 +16,15 @@ jobs:
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.BACKEND_DROPLEY_KEY }}  
+        ssh-private-key: ${{ secrets.BACKEND_DROPLET_KEY }}  
 
     - name: Pull the latest changes and restart PM2
       run: |
         ssh -o StrictHostKeyChecking=no dev@143.244.186.90 << 'EOF'
           cd /home/dev/apps/Vendors_Products_Service
-          git pull origin  
-          pm2 reload all        
-        EOF 
+          git pull origin 
+          pm2 reload all
+        EOF
 
     - name: Restart NGINX (if needed)
       run: |

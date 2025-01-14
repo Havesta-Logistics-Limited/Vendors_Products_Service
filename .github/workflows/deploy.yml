@@ -24,7 +24,7 @@ jobs:
           cd /home/dev/apps/Vendors_Products_Service
           git pull origin 
           pm2 reload all
-        EOF
+        EOF 
 
     - name: Restart NGINX (if needed)
       run: |

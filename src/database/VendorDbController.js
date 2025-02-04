@@ -1,4 +1,6 @@
 const { VendorProduct } = require("../models/VendorProduts.models");
+const { VendorPromotion } = require("../models/VendorPromotion.models");
+
 const sequelize = require("../database/sequelize");
 
 class VendorDatabase {
@@ -117,6 +119,63 @@ class VendorDatabase {
       return { success: false, message: e.message };
     }
   }
+
+  //PROMOTION
+  async addPromotion(productData) {
+    const transaction = await sequelize.transaction();
+    try {
+      
+      const newProduct = await VendorPromotion.create(productData, {
+        transaction,
+      });
+      await transaction.commit();
+
+      return {
+        success: true,
+        message: "Promotion added successfully",
+        product: newProduct,
+      };
+    } catch (e) {
+      console.log(e.message);
+      await transaction.rollback();
+    }
+  }
+
+  async addNewPromotion(productData) {
+    const transaction = await sequelize.transaction();
+    try {
+      
+      const newProduct = await VendorPromotion.create(productData, {
+        transaction,
+      });
+      await transaction.commit();
+
+      return {
+        success: true,
+        message: "Promotion added successfully",
+        product: newProduct,
+      };
+    } catch (e) {
+      console.log(e.message);
+      await transaction.rollback();
+    }
+  }
+
+  async getAllPromotion(vendorId, limit, offset, page) {
+    try {
+      const promotion = await VendorPromotion.findAndCountAll({
+        where: { owner_public_id: vendorId },
+        order: [['id', 'DESC']],
+      
+      });
+      console.log(promotion.rows, "getting promotons")
+
+      return { success: true, promotion: promotion.rows, total: promotion.count };
+    } catch (e) {
+      return { success: false, message: "Server could not fetch products" };
+    }
+  }
+  
 
   
 

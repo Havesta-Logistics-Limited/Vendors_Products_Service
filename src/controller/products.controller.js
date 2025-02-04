@@ -123,6 +123,7 @@ const toggleProductStatus = async (req, res) => {
 const addProducts = async (req, res) => {
   console.log("function running");
   const publicId = req.user.PUID; /* req.user.publicId */
+  console.log(publicId, "proddddd")
   const productId = uuidv4();
   const {
     productName,

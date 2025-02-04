@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
     return responseHandler.forbidden(res, "Invalid session please login again")
    }
 
-   req.user= decodedToken
+   req.user = decodedToken
     next();
   } catch (err) {
     res.status(403).json({ status: "failed", message: err.message });

@@ -174,6 +174,37 @@ class VendorDatabase {
     } catch (e) {
       return { success: false, message: "Server could not fetch products" };
     }
+  };
+
+
+  async editPromotion(vendorId, productId, promotionData) {
+
+    const transaction = await sequelize.transaction();
+
+    try {
+        const productExists = await VendorProduct.findOne({
+            where: {
+              owner_public_id: vendorId,
+              product_public_id: productId,
+            },
+            transaction,
+          });
+          
+          if (!productExists) {
+            throw new Error("Product not found");
+          }
+        
+          productExists.set(promotionData);  
+          await productExists.save({ transaction }); 
+          
+          await transaction.commit();
+          return { success: true, message: "Product updated successfully", product: productExists };
+          
+     
+    } catch (e) {
+      await transaction.rollback();
+      return { success: false, message: e.message };
+    }
   }
   
 

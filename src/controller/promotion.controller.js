@@ -192,4 +192,24 @@ const addPromotion = async (req, res) => {
      
    };
 
-  module.exports = {addPromotion, getAllPromotions, addNewPromotion}
+
+   const editPromotion = async (req, res) => {
+    const promotionId = req.query.id;
+    const publicId = req.user.PUID;
+    const updatedFields = req.body;
+   console.log(updatedFields)
+    try {
+     const action = await vendorDb.editPromotion(publicId, productId, updatedFields)
+     if(action.success !== true){
+      return responseHandler.unprocessable(res, action.message);
+     }
+      responseHandler.success(res, action.product)
+    } catch (err) {
+      console.log(err.message)
+    return  responseHandler.unprocessable(res, "Could not update product try again");
+    } 
+  };
+
+
+
+  module.exports = {addPromotion, getAllPromotions, addNewPromotion, editPromotion}

@@ -10,11 +10,19 @@ const { errorMiddleware } = require("../handlers/middlewareError.handler");
 const app = express();
 
 if(process.env.CODE_ENV !== 'production'){
-  app.use(cors({
-    origin: "http://localhost:8080", 
-    credentials: true, 
+  // app.use(cors({
+  //   origin: "*", 
+  //   credentials: true, 
    
-  }))
+  // }))
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like curl or Postman) or any origin
+    callback(null, origin || true);
+  },
+  credentials: true
+}));
 }
 // Middleware for JSON parsing and cookies
 app.use(cookieParser());

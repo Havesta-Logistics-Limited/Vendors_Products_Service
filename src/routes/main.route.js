@@ -4,6 +4,7 @@ const productController = require("../controller/products.controller");
 const requestHandler = require("../handlers/request.handler");
 const autMiddleware = require("../middleware/auth.middleware")
 const promotionController = require("../controller/promotion.controller")
+const marketplaceController = require("../controller/marketplace.controller")
 const {
   addProductValidation,
   individualProductValidation,
@@ -18,6 +19,11 @@ router.get(
   authMiddleware,
   requestHandler.validate,
   productController.getAllProducts
+)
+
+router.get(
+  "/marketplace/all_vendors",
+  marketplaceController.getVendors
 )
 
 router.get(
